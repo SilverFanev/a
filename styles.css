@@ -214,6 +214,35 @@ footer {
         flex-wrap: wrap;
     }
 }
+
+/* Styles pour les images des produits */
+.image-container {
+    height: var(--image-height);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.bracelet-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.image-fallback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* Ajoutez ces styles à la fin du fichier */
 
 /* Styles pour la page produit */
@@ -275,3 +304,4 @@ footer {
     height: 100%;
     object-fit: cover;
 }
+
