@@ -4,24 +4,78 @@
     <meta charset="UTF-8">
     <title>Détails du produit</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <header>
+    <header class="product-header">
         <a href="index.html">← Retour</a>
         <h1>Détails du bracelet</h1>
     </header>
     
-    <main>
+    <main class="product-main">
         <div class="product-detail">
-            <div class="product-image"></div>
+            <div id="3d-viewer"></div>
             <div class="product-info">
-                <h2>Bracelet Améthyste</h2>
-                <p class="price">29€</p>
-                <div class="rating">★★★★☆</div>
-                <p class="description">Pierre spirituelle pour calmer l'esprit et favoriser l'intuition.</p>
+                <h2>Bracelet Pierre Bleue</h2>
+                <p class="price">39€</p>
+                <div class="rating">★★★★★</div>
+                <p class="description">Bracelet en pierre naturelle avec propriétés énergétiques.</p>
                 <button class="contact-btn">Contactez-nous via Messenger</button>
             </div>
         </div>
     </main>
+
+    <script>
+        // Initialisation de la scène 3D
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
+        renderer.setSize(document.getElementById('3d-viewer').offsetWidth, 400);
+        document.getElementById('3d-viewer').appendChild(renderer.domElement);
+        
+        // Lumière
+        const light = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(0, 1, 1);
+        scene.add(directionalLight);
+        
+        // Chargement du modèle 3D
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+            'models/Blue_Stone_Bracelet_0510194457_texture.glb',
+            function (gltf) {
+                scene.add(gltf.scene);
+                camera.position.z = 5;
+                
+                // Contrôles orbitaux
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.25;
+                
+                // Animation
+                function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                animate();
+            },
+            undefined,
+            function (error) {
+                console.error('Erreur de chargement du modèle 3D:', error);
+            }
+        );
+        
+        // Adaptation au redimensionnement
+        window.addEventListener('resize', () => {
+            camera.aspect = document.getElementById('3d-viewer').offsetWidth / 400;
+            camera.updateProjectionMatrix();
+            renderer.setSize(document.getElementById('3d-viewer').offsetWidth, 400);
+        });
+    </script>
 </body>
 </html>
